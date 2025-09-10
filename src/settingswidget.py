@@ -90,6 +90,7 @@ class SettingsWidget(QtWidgets.QWidget):
         high_dpi = self.userdata.get(self.userdata.CFGS.APPLY_HIGH_DPI, True)
         only_audio = self.userdata.get(self.userdata.CFGS.DOWNLOAD_AUDIO_ONLY, False)
         disable_title_limit = self.userdata.get(self.userdata.CFGS.DISABLE_TITLE_LENGTH_LIMIT, False)
+        read_clipboard = self.userdata.get(self.userdata.CFGS.AUTO_FILL_DATA_FROM_CLIPBOARD, True)
         self.ui.spin_threads.setValue(max_thread_count)
         self.ui.combo_codec.setCurrentText(video_codec_id[codec])
         self.ui.line_path.setText(path)
@@ -101,6 +102,7 @@ class SettingsWidget(QtWidgets.QWidget):
         self.ui.combo_style.setCurrentText(qt_style)
         self.ui.check_highdpi.setChecked(high_dpi)
         self.ui.check_close_text_len_limit.setChecked(disable_title_limit)
+        self.ui.check_read_clipboard.setChecked(read_clipboard)
 
     def save_settings(self):
         path = self.ui.line_path.text()
@@ -113,6 +115,7 @@ class SettingsWidget(QtWidgets.QWidget):
         only_audio = self.ui.check_audio.isChecked()
         high_dpi = self.ui.check_highdpi.isChecked()
         disable_title_limit = self.ui.check_close_text_len_limit.isChecked()
+        read_clipboard = self.ui.check_read_clipboard.isChecked()
         self.userdata.set(self.userdata.CFGS.VIDEO_CODEC, codec)
         self.userdata.set(self.userdata.CFGS.DOWNLOAD_PATH, path)
         self.userdata.set(self.userdata.CFGS.RESERVE_AUDIO, audio)
@@ -123,6 +126,7 @@ class SettingsWidget(QtWidgets.QWidget):
         self.userdata.set(self.userdata.CFGS.DOWNLOAD_AUDIO_ONLY, only_audio)
         self.userdata.set(self.userdata.CFGS.APPLY_HIGH_DPI, high_dpi)
         self.userdata.set(self.userdata.CFGS.DISABLE_TITLE_LENGTH_LIMIT, disable_title_limit)
+        self.userdata.set(self.userdata.CFGS.AUTO_FILL_DATA_FROM_CLIPBOARD, read_clipboard)
         self.userdata.save()
 
     def update_tab_changes(self, old, now):

@@ -1,9 +1,11 @@
-from PySide6.QtCore import SIGNAL, SLOT
+import pyperclip
+from PySide6.QtCore import SIGNAL, SLOT, QEvent
 from PySide6.QtWidgets import QWidget
 
 import style
 from Lib.bili_api.utils import matchFomat
 from ui_inputsetupwidget import Ui_InputSetupWidget
+from utils import configUtils
 
 
 class InputSetupWidget(QWidget):
@@ -21,9 +23,29 @@ class InputSetupWidget(QWidget):
             SLOT("match_format(QString)"),  # type: ignore
         )
 
+        self.installEventFilter(self)
+
+    def eventFilter(self, watched, event: QEvent):
+        if watched == self:
+            if event.type() == QEvent.Type.WindowActivate:
+                self.onWindowActivate()
+                return True
+        return super(InputSetupWidget, self).eventFilter(watched, event)
+
     def data_update(self, back):
         if not back:
             self.ui.line_input.clear()
+
+    def onWindowActivate(self):
+        read = configUtils.getUserData(configUtils.Configs.AUTO_FILL_DATA_FROM_CLIPBOARD, True)
+        if not read:
+            return
+        data = pyperclip.paste()
+        if len(data) == 0:
+            return
+        # match data
+        if matchFomat.matchAll(data):
+            self.ui.line_input.setText(data)
 
     def match_format(self, format_string: str):
         if len(format_string.replace(" ", "")) == 0:

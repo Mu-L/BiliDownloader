@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>ConfirmWidget</class>
  <widget class="QWidget" name="ConfirmWidget">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>297</width>
-    <height>277</height>
-   </rect>
-  </property>
   <property name="font">
    <font>
     <family>HarmonyOS Sans SC</family>
@@ -68,6 +60,33 @@
           </size>
          </property>
         </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_2">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="font">
+          <font>
+           <family>HarmonyOS Sans SC</family>
+           <pointsize>8</pointsize>
+          </font>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QLabel {
+ color: rgb(162, 162, 162);
+}</string>
+         </property>
+         <property name="text">
+          <string>右键保存</string>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="ImageLabel" name="cover_label">

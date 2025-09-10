@@ -18,6 +18,7 @@ class Configs:
     APPLY_HIGH_DPI = "apply_high_dpi"
     PASSPORT_CRYPT_KEY = "passport_crypt_key"
     DISABLE_TITLE_LENGTH_LIMIT = "disable_title_length_limit"
+    AUTO_FILL_DATA_FROM_CLIPBOARD = "auto_fill_data_from_clipboard"
 
 
 def setupUserData(reset: bool = False) -> None:

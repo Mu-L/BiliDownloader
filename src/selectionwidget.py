@@ -6,10 +6,12 @@ from centralcheckbox import CentralCheckBox
 from ui_selectionwidget import Ui_SelectionWidget
 
 SELECTTON_HELP = """输入你要下载的区段：
+区段使用单集数字或 A-B 的格式指定头尾，使用英文逗号(,)分割多个区段
 
-假设你要下载第一P和第二P，你可以输入：1-1, 2-2 或者输入1-2
+举例：
+假设你要下载第一P和第二P，你可以输入：1-2 或者输入 1, 2
 
-如果要下载第一P到第五P，但是不要第三P，你可以输入：1-2, 4-5
+如果要下载第一P到第五P，但是不要第三P，你可以分成两个区段以规避3：1-2, 4-5
 
 最后，按下设置选集按钮完成设置"""
 
@@ -82,25 +84,40 @@ class SelectionWidget(QtWidgets.QWidget):
             QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
             return
         for block in selections:
-            rng = block.split('-')
-            if len(rng) != 2:
-                QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
-                return
-            if not rng[0].isdigit() or not rng[1].isdigit():
-                QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
-                return
-            if int(rng[0]) < 1:
-                QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
-                return
-            if int(rng[0]) > int(rng[1]):
-                QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
-                return
-            if int(rng[1]) > len(self.data["page_data"]):
-                QtWidgets.QMessageBox.critical(self, "错误", "选集过大")
-                return
-            if int(rng[0]) <= select_max:
-                QtWidgets.QMessageBox.critical(self, "错误", "顺序错误")
-                return
+            if '-' in block:
+                rng = block.split('-')
+                if len(rng) != 2:
+                    QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
+                    return
+                if not rng[0].isdigit() or not rng[1].isdigit():
+                    QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
+                    return
+                if int(rng[0]) < 1:
+                    QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
+                    return
+                if int(rng[0]) > int(rng[1]):
+                    QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
+                    return
+                if int(rng[1]) > len(self.data["page_data"]):
+                    QtWidgets.QMessageBox.critical(self, "错误", "选集过大")
+                    return
+                if int(rng[0]) <= select_max:
+                    QtWidgets.QMessageBox.critical(self, "错误", "顺序错误")
+                    return
+            else:
+                if not block.isdigit():
+                    QtWidgets.QMessageBox.critical(self, "错误", "选集不是数字")
+                    return
+                if int(block) < 1:
+                    QtWidgets.QMessageBox.critical(self, "错误", "语法错误")
+                    return
+                if int(block) > len(self.data["page_data"]):
+                    QtWidgets.QMessageBox.critical(self, "错误", "选集过大")
+                    return
+                if int(block) <= select_max:
+                    QtWidgets.QMessageBox.critical(self, "错误", "顺序错误")
+                    return
+                rng = [int(block)] * 2
 
             for i in range(int(rng[0]) - 1, int(rng[1])):
                 selected.append(i)

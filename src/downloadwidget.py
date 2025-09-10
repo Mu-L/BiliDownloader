@@ -12,6 +12,8 @@ class DownloadWidget(QtWidgets.QWidget):
         self.ui = Ui_DownloadWidget()
         self.ui.setupUi(self)
 
+        self.ui.listWidget.verticalScrollBar().setSingleStep(10)
+
         self.max_thread_count = configUtils.getUserData(configUtils.Configs.MAX_THREAD_COUNT, 4)
 
         self.tasks = []
