@@ -35,7 +35,9 @@ pip install -r requirements_win.txt
 
 
 ### 运行前准备
-下载支持AV1的[ffmpeg](https://majjcom.lanzouo.com/ipE9324dv8sh)可执行文件，并将`ffmpeg`文件夹解压至`main.py`所在的目录下
+下载支持AV1的[ffmpeg](https://majjcom.lanzouo.com/b01xc9emh)可执行文件，并将`ffmpeg`文件夹解压至`main.py`所在的目录下
+
+链接密码：5ytb
 
 目录结构大概是这样：
 
@@ -43,8 +45,6 @@ pip install -r requirements_win.txt
 /--main.py
  |-requirments.txt
  |-ffmpeg/--ffmpeg.exe
- |        |-xxx.dll
- |        |-...
  |-...
 ```
 
