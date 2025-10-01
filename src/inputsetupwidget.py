@@ -18,12 +18,14 @@ class InputSetupWidget(QWidget):
 
         self.connect(
             self.ui.line_input,
-            SIGNAL("textChanged(QString)"),  # type: ignore
+            SIGNAL("textChanged(QString)"),
             self,
-            SLOT("match_format(QString)"),  # type: ignore
+            SLOT("match_format(QString)"),
         )
 
         self.installEventFilter(self)
+
+        self.autoReadClipboard = configUtils.getUserData(configUtils.Configs.AUTO_FILL_DATA_FROM_CLIPBOARD, True)
 
     def eventFilter(self, watched, event: QEvent):
         if watched == self:
@@ -37,8 +39,7 @@ class InputSetupWidget(QWidget):
             self.ui.line_input.clear()
 
     def onWindowActivate(self):
-        read = configUtils.getUserData(configUtils.Configs.AUTO_FILL_DATA_FROM_CLIPBOARD, True)
-        if not read:
+        if not self.autoReadClipboard:
             return
         data = pyperclip.paste()
         if len(data) == 0:

@@ -6,14 +6,15 @@ from centralcheckbox import CentralCheckBox
 from ui_selectionwidget import Ui_SelectionWidget
 
 SELECTTON_HELP = """输入你要下载的区段：
-区段使用单集数字或 A-B 的格式指定头尾，使用英文逗号(,)分割多个区段
+区段使用单集数字或 A-B 的格式指定头尾，使用英文逗号(,)分割多个区段。
+如果不输入内容点击设置选集则对全部选项进行反选操作。
 
 举例：
 假设你要下载第一P和第二P，你可以输入：1-2 或者输入 1, 2
 
 如果要下载第一P到第五P，但是不要第三P，你可以分成两个区段以规避3：1-2, 4-5
 
-最后，按下设置选集按钮完成设置"""
+最后，按下设置选集按钮完成设置。"""
 
 
 class SelectionWidget(QtWidgets.QWidget):
@@ -76,6 +77,14 @@ class SelectionWidget(QtWidgets.QWidget):
     # Slot
     def on_set_button_clicked(self):
         selection_str = self.ui.line_selection.text()
+
+        # Defult to select all
+        if len(selection_str) == 0:
+            for i in self.data["page_data"]:
+                tmp = i["box"].get_box()
+                tmp.setChecked(not tmp.isChecked())
+            return
+
         selection_str = selection_str.replace(" ", "")
         selections = selection_str.split(",")
         selected = []

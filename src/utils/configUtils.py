@@ -19,6 +19,7 @@ class Configs:
     PASSPORT_CRYPT_KEY = "passport_crypt_key"
     DISABLE_TITLE_LENGTH_LIMIT = "disable_title_length_limit"
     AUTO_FILL_DATA_FROM_CLIPBOARD = "auto_fill_data_from_clipboard"
+    PULL_DOLBY_AUDIO = "pull_dolby_audio"
 
 
 def setupUserData(reset: bool = False) -> None:

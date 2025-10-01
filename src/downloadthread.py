@@ -68,6 +68,21 @@ class DownloadTask(QtCore.QThread):
         for i in qid_match:
             if i["codecid"] == codec:
                 video_url = i["baseUrl"]
+
+        # process special audio stream
+        if self.task["special_audio"] is not None:
+            special_audio = self.task["special_audio"]
+            aud_stream_data = None
+            try:
+                if special_audio == "flac":
+                    aud_stream_data = get_url["dash"]["flac"]["audio"]
+                elif special_audio == "dolby":
+                    aud_stream_data = get_url["dash"]["dolby"]["audio"][0]
+            except:
+                pass
+            if aud_stream_data is not None:
+                get_url["dash"]["audio"].insert(0, aud_stream_data)
+
         audio_url = get_url["dash"]["audio"][0]["baseUrl"]
 
         # Get size
@@ -104,13 +119,15 @@ class DownloadTask(QtCore.QThread):
         self.emit(QtCore.SIGNAL("enable_restart()"))
 
         # Download video
-        video_temp_file_name = "{}_temp.mp4".format(self.task["name"])
+        video_temp_file_base = "{}_temp.mp4"
+        video_temp_file_name = video_temp_file_base.format(self.task["name"])
         video_temp_file_path = root_dir.absoluteFilePath(video_temp_file_name)
         if not self.task["onlyAudio"]:
             self.download_dash_video(video_url, video_temp_file_path)
 
         # Download audio
-        audio_temp_file_name = "{}_temp.m4a".format(self.task["name"])
+        audio_temp_file_base = "{}_temp.m4a"
+        audio_temp_file_name = audio_temp_file_base.format(self.task["name"])
         audio_temp_file_path = root_dir.absoluteFilePath(audio_temp_file_name)
         self.download_dash_audio(audio_url, audio_temp_file_path)
 
@@ -125,7 +142,10 @@ class DownloadTask(QtCore.QThread):
         self.emit(QtCore.SIGNAL("update_status(QString)"), "正在清理")
         root_dir.remove(video_temp_file_path)
         if self.task["reserveAudio"] or self.task["onlyAudio"]:
-            root_dir.rename(audio_temp_file_name, "{}.m4a".format(self.task["name"]))
+            if self.task.get("special_audio", "") == "flac":
+                root_dir.rename(audio_temp_file_name, "{}.flac".format(self.task["name"]))
+            else:
+                root_dir.rename(audio_temp_file_name, "{}.m4a".format(self.task["name"]))
         else:
             root_dir.remove(audio_temp_file_path)
 

@@ -5,12 +5,12 @@ from os.path import isdir
 
 from PySide6 import QtWidgets, QtCore
 from PySide6.QtWidgets import QFileDialog, QTableWidgetItem, QMessageBox
-from ui_configwidget import Ui_ConfigWidget
 
 import style
 from Lib.bili_api import video, exceptions, bangumi
 from Lib.bili_api.utils.passport import BiliPassport, decode_cookie
 from centralcheckbox import CentralCheckBox
+from ui_configwidget import Ui_ConfigWidget
 from utils import configUtils
 from utils.removeSpecialChars import removeSpecialChars
 
@@ -26,10 +26,12 @@ for _i in video_codec_id:
     video_codec_match[video_codec_id[_i]] = _i
 
 
-def get_fnval(ultra: bool):
+def get_fnval(ultra: bool = False, dolby_audio: bool = False):
     fnval = video.FNVAL_PRESET().default()
     if ultra:
-        fnval |= video.FNVAL_PRESET.EighK | video.FNVAL_PRESET.HDR
+        fnval |= video.FNVAL_PRESET.EighK | video.FNVAL_PRESET.HDR | video.FNVAL_PRESET.HDRVivid
+    if dolby_audio:
+        fnval |= video.FNVAL_PRESET.DolbyAudio
     return fnval
 
 
@@ -39,7 +41,7 @@ class ConfigWidget(QtWidgets.QWidget):
         self.quality_match = {}
         self.ui = Ui_ConfigWidget()
         self.ui.setupUi(self)
-        self.fnval = get_fnval(False)
+        self.fnval = get_fnval()
         self.data = None
         codecs = []
         for i in video_codec_match:
@@ -86,6 +88,11 @@ class ConfigWidget(QtWidgets.QWidget):
             rmspchar = lambda s: removeSpecialChars(s, None)
         else:
             rmspchar = lambda s: removeSpecialChars(s)
+        special_audio = None
+        if self.ui.combo_audio.isEnabled():
+            special_audio = self.ui.combo_audio.currentText()
+            if len(special_audio) == 0:
+                special_audio = None
         for i in self.data["download_data"]:
             box_danmaku: CentralCheckBox = i["box_danmaku"]
             box_audio: CentralCheckBox = i["box_audio"]
@@ -104,6 +111,7 @@ class ConfigWidget(QtWidgets.QWidget):
                 "saveDanmaku": box_danmaku.get_box().isChecked(),
                 "fnval": self.fnval,
                 "type": i["type"],
+                "special_audio": special_audio,
             }
             self.parent().download.push_task(push)
         self.parent().input_finished()
@@ -125,13 +133,22 @@ class ConfigWidget(QtWidgets.QWidget):
             self.ui.widget.setEnabled(False)
             self.ui.button_submit.setEnabled(False)
             return
+        quality = data["quality"]
         self.quality_match = {}
-        for i in data:
+        for i in quality:
             self.quality_match[i[1]] = i[0]
             self.ui.combo_quality.addItem(i[1])
         self.ui.widget.setEnabled(True)
         self.ui.button_submit.setEnabled(True)
         self.on_path_changed(self.ui.line_path.text())
+        if len(data["audio"]) > 0:
+            self.ui.label_audio.setEnabled(True)
+            self.ui.combo_audio.addItem("")
+            for i in data["audio"]:
+                self.ui.combo_audio.addItem(i)
+            self.ui.combo_audio.setEnabled(True)
+        else:
+            self.ui.combo_audio.setToolTip("当前视频无特殊音频")
 
     # Slot
     def load_finish(self):
@@ -142,10 +159,17 @@ class ConfigWidget(QtWidgets.QWidget):
         self.ui.widget.setEnabled(False)
         self.ui.button_submit.setEnabled(False)
         self.ui.combo_quality.clear()
+        self.ui.combo_audio.clear()
+        self.ui.combo_audio.setToolTip(None)
+        self.ui.combo_audio.setEnabled(False)
+        self.ui.label_audio.setEnabled(False)
         self.ui.table_downloads.setRowCount(0)
         userdata = configUtils.UserDataHelper()
         codec = userdata.get(userdata.CFGS.VIDEO_CODEC, 7)
-        self.fnval = get_fnval(userdata.get(userdata.CFGS.ULTRA_RESOLUTION, False))
+        self.fnval = get_fnval(
+            userdata.get(userdata.CFGS.ULTRA_RESOLUTION, False),
+            userdata.get(userdata.CFGS.PULL_DOLBY_AUDIO, False)
+        )
         self.ui.combo_codec.setCurrentText(video_codec_id[codec])
         self.data = self.parent().input_pages[2].data
         self.ui.line_path.setText(
@@ -238,11 +262,28 @@ class GetVideoInfo(QtCore.QThread):
                             passport=passport
                         )["video_info"]
                 quality = []
-                for i in range(len(data["accept_quality"])):
+                # for i in range(len(data["accept_quality"])):
+                #     quality.append(
+                #         (data["accept_quality"][i], data["accept_description"][i])
+                #     )
+                for i in data["support_formats"]:
                     quality.append(
-                        (data["accept_quality"][i], data["accept_description"][i])
+                        (i["quality"], i["new_description"])
                     )
-                data = quality
+                audio = []
+                if "flac" in data["dash"]:
+                    if data["dash"]["flac"] is not None:
+                        if data["dash"]["flac"]["audio"] is not None:
+                            audio.append("flac")
+                if "dolby" in data["dash"]:
+                    if data["dash"]["dolby"] is not None:
+                        if data["dash"]["dolby"]["audio"] is not None:
+                            if len(data["dash"]["dolby"]["audio"]) > 0:
+                                audio.append("dolby")
+                data = {
+                    "audio": audio,
+                    "quality": quality
+                }
                 break
             except exceptions.NetWorkException as ex:
                 data = str(ex)

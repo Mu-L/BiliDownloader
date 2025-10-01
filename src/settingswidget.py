@@ -69,6 +69,12 @@ class SettingsWidget(QtWidgets.QWidget):
         )
 
         self.connect(
+            self.ui.button_open_download_dir,
+            QtCore.SIGNAL("clicked()"),
+            self.on_open_download_dir_clicked,
+        )
+
+        self.connect(
             self.ui.button_logout,
             QtCore.SIGNAL("clicked()"),
             self.on_logout_button_clicked,
@@ -91,6 +97,7 @@ class SettingsWidget(QtWidgets.QWidget):
         only_audio = self.userdata.get(self.userdata.CFGS.DOWNLOAD_AUDIO_ONLY, False)
         disable_title_limit = self.userdata.get(self.userdata.CFGS.DISABLE_TITLE_LENGTH_LIMIT, False)
         read_clipboard = self.userdata.get(self.userdata.CFGS.AUTO_FILL_DATA_FROM_CLIPBOARD, True)
+        dolby_audio = self.userdata.get(self.userdata.CFGS.PULL_DOLBY_AUDIO, False)
         self.ui.spin_threads.setValue(max_thread_count)
         self.ui.combo_codec.setCurrentText(video_codec_id[codec])
         self.ui.line_path.setText(path)
@@ -103,6 +110,7 @@ class SettingsWidget(QtWidgets.QWidget):
         self.ui.check_highdpi.setChecked(high_dpi)
         self.ui.check_close_text_len_limit.setChecked(disable_title_limit)
         self.ui.check_read_clipboard.setChecked(read_clipboard)
+        self.ui.check_dolby_audio.setChecked(dolby_audio)
 
     def save_settings(self):
         path = self.ui.line_path.text()
@@ -116,6 +124,7 @@ class SettingsWidget(QtWidgets.QWidget):
         high_dpi = self.ui.check_highdpi.isChecked()
         disable_title_limit = self.ui.check_close_text_len_limit.isChecked()
         read_clipboard = self.ui.check_read_clipboard.isChecked()
+        dolby_audio = self.ui.check_dolby_audio.isChecked()
         self.userdata.set(self.userdata.CFGS.VIDEO_CODEC, codec)
         self.userdata.set(self.userdata.CFGS.DOWNLOAD_PATH, path)
         self.userdata.set(self.userdata.CFGS.RESERVE_AUDIO, audio)
@@ -127,6 +136,7 @@ class SettingsWidget(QtWidgets.QWidget):
         self.userdata.set(self.userdata.CFGS.APPLY_HIGH_DPI, high_dpi)
         self.userdata.set(self.userdata.CFGS.DISABLE_TITLE_LENGTH_LIMIT, disable_title_limit)
         self.userdata.set(self.userdata.CFGS.AUTO_FILL_DATA_FROM_CLIPBOARD, read_clipboard)
+        self.userdata.set(self.userdata.CFGS.PULL_DOLBY_AUDIO, dolby_audio)
         self.userdata.save()
 
     def update_tab_changes(self, old, now):
@@ -172,6 +182,13 @@ class SettingsWidget(QtWidgets.QWidget):
     # Slot
     def on_open_config_dir_clicked(self):
         open_folder(QtCore.QDir("data").absolutePath(), self)
+
+    # Slot
+    def on_open_download_dir_clicked(self):
+        open_folder(self.userdata.get(
+            self.userdata.CFGS.DOWNLOAD_PATH,
+            QtCore.QDir("Download").absolutePath()
+        ))
 
     # Slot
     def on_logout_button_clicked(self):

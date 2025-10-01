@@ -4,6 +4,7 @@ import sys
 
 from PySide6 import QtWidgets, QtGui
 
+import update
 from mainwindow import MainWindow
 from utils import configUtils
 
@@ -35,7 +36,17 @@ def updateHighDpi():
         os.environ["QT_ENABLE_HIGHDPI_SCALING"] = "0"
 
 
+def install_font_for_portable_windows():
+    if sys.platform == "win32" and update.NO_UPDATE:
+        from utils import check_nuitka as _check_nuitka
+        if _check_nuitka.check():
+            from utils import install_sysfont_windows as _install_font_win
+            if not _install_font_win.check_font("HarmonyOS Sans SC"):
+                _install_font_win.install_font("HarmonyOS Sans SC", "font\\HarmonyOS_Sans_SC_Regular.ttf")
+
+
 if __name__ == "__main__":
+    install_font_for_portable_windows()
     updateHighDpi()
     app = QtWidgets.QApplication(sys.argv)
     font = app.font()

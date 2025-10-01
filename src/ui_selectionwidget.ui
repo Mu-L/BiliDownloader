@@ -2,14 +2,6 @@
 <ui version="4.0">
  <class>SelectionWidget</class>
  <widget class="QWidget" name="SelectionWidget">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>332</width>
-    <height>317</height>
-   </rect>
-  </property>
   <property name="font">
    <font>
     <family>HarmonyOS Sans SC</family>
@@ -47,7 +39,7 @@
         <string/>
        </property>
        <property name="placeholderText">
-        <string>输入选集配置</string>
+        <string>输入选集配置（留空反选）</string>
        </property>
       </widget>
      </item>
