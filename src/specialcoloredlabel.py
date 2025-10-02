@@ -22,7 +22,7 @@ reactions = (
 
 
 class SpecialColoredLabel(ColoredLabel):
-    def __init__(self, parent: QtWidgets.QWidget | None = ...):
+    def __init__(self, parent: QtWidgets.QWidget = ...):
         super().__init__(parent)
         self.click_times = 0
         self.re_index = 0

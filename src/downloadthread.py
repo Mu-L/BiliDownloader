@@ -25,8 +25,25 @@ def download_danmaku(path, cid):
         f.write(danmakuAss)
 
 
+class TimerThread(QtCore.QThread):
+    def __init__(self, parent: QtCore.QObject = ...) -> None:
+        super().__init__(parent)
+        self.tstop = False
+
+    def stop(self):
+        self.tstop = True
+
+    def run(self):
+        while not self.tstop:
+            time.sleep(0.1)
+            self.emit(
+                QtCore.SIGNAL("ttimeout()")
+            )
+        self.deleteLater()
+
+
 class DownloadTask(QtCore.QThread):
-    def __init__(self, parent: QtCore.QObject | None = ...) -> None:
+    def __init__(self, parent: QtCore.QObject = ...) -> None:
         super().__init__(parent)
         self.fource_stop = False
         self.video_finished_size = 0
@@ -407,12 +424,14 @@ class DownloadTask(QtCore.QThread):
             self.task["finished"] = True
             return
 
-        self.timer = QtCore.QTimer()
-        self.timer.setInterval(100)
-        self.timer.timeout.connect(self.timer_timeout)
+        self.timer = TimerThread(None)
+        self.connect(
+            self.timer,
+            QtCore.SIGNAL("ttimeout()"),
+            self.timer_timeout
+        )
         self.timer_stopped = False
         self.timer.start()
-        self.timer.moveToThread(self.thread())
 
         # parse urls
         if self.task["type"] == "video":

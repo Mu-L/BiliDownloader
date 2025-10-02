@@ -35,7 +35,7 @@ def check_account() -> ACCOUNT_STATUS:
 
 
 class CheckAccountThread(QThread):
-    def __init__(self, parent: QObject | None = ...):
+    def __init__(self, parent: QObject = ...):
         super().__init__(parent)
 
     def run(self):

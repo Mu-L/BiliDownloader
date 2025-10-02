@@ -14,7 +14,7 @@ def show_changelog(parent: QtWidgets.QWidget):
 
 
 class DialogChangeLog(QtWidgets.QDialog):
-    def __init__(self, info, parent: QtWidgets.QWidget | None = ...):
+    def __init__(self, info, parent: QtWidgets.QWidget = ...):
         super(DialogChangeLog, self).__init__(parent)
         self.ui = Ui_DialogChangeLog()
         self.ui.setupUi(self)

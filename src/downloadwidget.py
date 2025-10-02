@@ -7,7 +7,7 @@ from utils import configUtils
 
 
 class DownloadWidget(QtWidgets.QWidget):
-    def __init__(self, parent: QtWidgets.QWidget | None = ...) -> None:
+    def __init__(self, parent: QtWidgets.QWidget = ...) -> None:
         super().__init__(parent)
         self.ui = Ui_DownloadWidget()
         self.ui.setupUi(self)

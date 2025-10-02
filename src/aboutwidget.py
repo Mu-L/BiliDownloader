@@ -1,14 +1,14 @@
 from PySide6 import QtWidgets, QtCore
+from ui_aboutwidget import Ui_AboutWidget
 
 from dialogchangelog import show_changelog
 from dialoglicense import show_license
-from ui_aboutwidget import Ui_AboutWidget
 from update import NO_UPDATE
 from utils import version
 
 
 class AboutWidget(QtWidgets.QWidget):
-    def __init__(self, parent: QtWidgets.QWidget | None = ...) -> None:
+    def __init__(self, parent: QtWidgets.QWidget = ...) -> None:
         super().__init__(parent)
         self.ui = Ui_AboutWidget()
         self.ui.setupUi(self)

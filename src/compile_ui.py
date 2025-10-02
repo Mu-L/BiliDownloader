@@ -15,7 +15,7 @@ def check_cache(cache, tgt, hashhex):
 
 def main():
     dirs = os.listdir(".")
-    cache: dict | None = None
+    cache: dict = None
 
     if os.path.exists(".ui_compiled.cache"):
         cache = {}

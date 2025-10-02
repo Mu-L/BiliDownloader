@@ -15,7 +15,7 @@ NO_UPDATE = False
 
 
 class UpdateChecker(QtCore.QThread):
-    def __init__(self, parent: QtCore.QObject | None = ...) -> None:
+    def __init__(self, parent: QtCore.QObject = ...) -> None:
         super().__init__(parent)
         self.timer_finished = False
 
@@ -43,7 +43,7 @@ class UpdateChecker(QtCore.QThread):
 
 
 class UpdateDownloader(QtCore.QThread):
-    def __init__(self, parent: QtCore.QObject | None = ...) -> None:
+    def __init__(self, parent: QtCore.QObject = ...) -> None:
         super().__init__(parent)
         self.timer_finished = False
         self.dir_path = None

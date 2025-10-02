@@ -4,7 +4,7 @@ from ui_dialogupdateinfo import Ui_DialogUpdateInfo
 
 
 class DialogUpdateInfo(QtWidgets.QDialog):
-    def __init__(self, version, info, parent: QtWidgets.QWidget | None = ...) -> None:
+    def __init__(self, version, info, parent: QtWidgets.QWidget = ...) -> None:
         super().__init__(parent)
         self.ui = Ui_DialogUpdateInfo()
         self.ui.setupUi(self)

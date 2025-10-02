@@ -25,7 +25,7 @@ def get_data(
         path: str,
         query: dict = None,
         header: dict = None,
-        data: dict | bytes = None,
+        data=None,
         data_type: str = "application/json"
 ):
     c = (

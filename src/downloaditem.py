@@ -7,7 +7,7 @@ from utils.sizefstr import sizefStr
 
 
 class DownloadItem(QtWidgets.QWidget):
-    def __init__(self, parent: QtWidgets.QWidget | None = ...) -> None:
+    def __init__(self, parent: QtWidgets.QWidget = ...) -> None:
         super().__init__(parent)
         self.ui = Ui_DownloadItem()
         self.ui.setupUi(self)

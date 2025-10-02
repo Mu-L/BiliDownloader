@@ -18,7 +18,7 @@ SELECTTON_HELP = """输入你要下载的区段：
 
 
 class SelectionWidget(QtWidgets.QWidget):
-    def __init__(self, parent: QtWidgets.QWidget | None = ...) -> None:
+    def __init__(self, parent: QtWidgets.QWidget = ...) -> None:
         super().__init__(parent)
         self.ui = Ui_SelectionWidget()
         self.ui.setupUi(self)

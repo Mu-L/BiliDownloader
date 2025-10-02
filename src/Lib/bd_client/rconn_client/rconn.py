@@ -14,12 +14,12 @@ class RconnData:
 
 
 class RconnClient:
-    def __init__(self, addr: tuple[str, int]) -> None:
+    def __init__(self, addr: tuple) -> None:
         self._sock = _socket.socket(_socket.AF_INET, _socket.SOCK_STREAM)
         self._sock.settimeout(None)
         self._sock.connect(addr)
 
-    def settimeout(self, timeout: float | None):
+    def settimeout(self, timeout: float):
         self._sock.settimeout(timeout)
 
     def close(self):

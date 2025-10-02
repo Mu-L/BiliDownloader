@@ -27,7 +27,7 @@ qt_styles += QtWidgets.QStyleFactory.keys()
 
 
 class SettingsWidget(QtWidgets.QWidget):
-    def __init__(self, parent: QtWidgets.QWidget | None = ...) -> None:
+    def __init__(self, parent: QtWidgets.QWidget = ...) -> None:
         super().__init__(parent)
         self.ui = Ui_SettingsWidget()
         self.ui.setupUi(self)

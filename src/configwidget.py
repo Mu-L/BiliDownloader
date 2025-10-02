@@ -36,7 +36,7 @@ def get_fnval(ultra: bool = False, dolby_audio: bool = False):
 
 
 class ConfigWidget(QtWidgets.QWidget):
-    def __init__(self, parent: QtWidgets.QWidget | None = ...) -> None:
+    def __init__(self, parent: QtWidgets.QWidget = ...) -> None:
         super().__init__(parent)
         self.quality_match = {}
         self.ui = Ui_ConfigWidget()
@@ -216,7 +216,7 @@ class ConfigWidget(QtWidgets.QWidget):
 
 class GetVideoInfo(QtCore.QThread):
     def __init__(
-            self, vid, isbvid: bool, cid, fnval: int, type_: str, parent: QtCore.QObject | None = ...
+            self, vid, isbvid: bool, cid, fnval: int, type_: str, parent: QtCore.QObject = ...
     ) -> None:
         super().__init__(parent)
         self.vid = vid

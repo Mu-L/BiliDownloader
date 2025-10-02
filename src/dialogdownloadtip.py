@@ -4,7 +4,7 @@ from ui_dialogdownloadtip import Ui_DialogDownloadTip
 
 
 class DialogDownloadTip(QtWidgets.QDialog):
-    def __init__(self, title, text, check, parent: QtWidgets.QWidget | None = ...):
+    def __init__(self, title, text, check, parent: QtWidgets.QWidget = ...):
         super(DialogDownloadTip, self).__init__(parent)
         self.ui = Ui_DialogDownloadTip()
         self.ui.setupUi(self)

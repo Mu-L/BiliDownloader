@@ -2,7 +2,7 @@ from PySide6 import QtCore, QtWidgets
 
 
 class ColoredLabel(QtWidgets.QLabel):
-    def __init__(self, parent: QtWidgets.QWidget | None = ...):
+    def __init__(self, parent: QtWidgets.QWidget = ...):
         super().__init__(parent)
         self.timer = QtCore.QTimer(self)
         self.timer.setInterval(33)

@@ -4,15 +4,15 @@ from io import BytesIO
 
 import qrcode
 from PySide6 import QtWidgets, QtGui, QtCore
-from ui_dialoglogin import Ui_DialogLogin
 
 from Lib.bili_api import user
 from Lib.bili_api.utils import cookieTools, passport
+from ui_dialoglogin import Ui_DialogLogin
 from utils import configUtils
 
 
 class DialogLogin(QtWidgets.QDialog):
-    def __init__(self, parent: QtWidgets.QWidget | None, userdata: configUtils.UserDataHelper) -> None:
+    def __init__(self, parent: QtWidgets.QWidget, userdata: configUtils.UserDataHelper) -> None:
         super().__init__(parent)
         self.ui = Ui_DialogLogin()
         self.ui.setupUi(self)
@@ -75,7 +75,7 @@ class DialogLogin(QtWidgets.QDialog):
 
 
 class LoginDataThread(QtCore.QThread):
-    def __init__(self, parent: QtCore.QObject | None = ...) -> None:
+    def __init__(self, parent: QtCore.QObject = ...) -> None:
         super().__init__(parent)
         self.thread_finished = False
 
