@@ -29,7 +29,7 @@ for _i in video_codec_id:
 def get_fnval(ultra: bool = False, dolby_audio: bool = False):
     fnval = video.FNVAL_PRESET().default()
     if ultra:
-        fnval |= video.FNVAL_PRESET.EighK | video.FNVAL_PRESET.HDR | video.FNVAL_PRESET.HDRVivid
+        fnval |= video.FNVAL_PRESET.EighK | video.FNVAL_PRESET.HDR
     if dolby_audio:
         fnval |= video.FNVAL_PRESET.DolbyAudio
     return fnval
@@ -111,7 +111,7 @@ class ConfigWidget(QtWidgets.QWidget):
                 "saveDanmaku": box_danmaku.get_box().isChecked(),
                 "fnval": self.fnval,
                 "type": i["type"],
-                "special_audio": special_audio,
+                "specialAudio": special_audio,
             }
             self.parent().download.push_task(push)
         self.parent().input_finished()
@@ -271,14 +271,15 @@ class GetVideoInfo(QtCore.QThread):
                         (i["quality"], i["new_description"])
                     )
                 audio = []
-                if "flac" in data["dash"]:
-                    if data["dash"]["flac"] is not None:
-                        if data["dash"]["flac"]["audio"] is not None:
+                dash_data = data.get("dash", {})
+                if "flac" in dash_data:
+                    if dash_data["flac"] is not None:
+                        if dash_data["flac"]["audio"] is not None:
                             audio.append("flac")
-                if "dolby" in data["dash"]:
-                    if data["dash"]["dolby"] is not None:
-                        if data["dash"]["dolby"]["audio"] is not None:
-                            if len(data["dash"]["dolby"]["audio"]) > 0:
+                if "dolby" in dash_data:
+                    if dash_data["dolby"] is not None:
+                        if dash_data["dolby"]["audio"] is not None:
+                            if len(dash_data["dolby"]["audio"]) > 0:
                                 audio.append("dolby")
                 data = {
                     "audio": audio,
