@@ -11,10 +11,9 @@ python -m nuitka ^
 --product-name=BiliDownloader ^
 --file-version=%~1 ^
 --product-version=%~1 ^
---copyright="Copyright (c) 2021-2025 Majjcom" ^
+--copyright="Copyright (c) 2021-2026 Majjcom" ^
 --windows-icon-from-ico="res/icon/icon.ico" ^
 --show-progress ^
---show-scons ^
 --deployment ^
 --jobs=16 ^
 main.py

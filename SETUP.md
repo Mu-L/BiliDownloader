@@ -3,7 +3,7 @@
 ## 1.直接运行py文件
 
 ### 准备运行环境
-Python Version ~= 3.10
+Python Version >= 3.10
 
 Operating System >= Windows 10
 
@@ -35,15 +35,15 @@ pip install -r requirements_win.txt
 
 
 ### 运行前准备
-下载支持AV1的[ffmpeg](https://majjcom.lanzouo.com/b01xc9emh)可执行文件，并将`ffmpeg`文件夹解压至`main.py`所在的目录下
+下载支持AV1的[ffmpeg](https://majjcom.lanzouo.com/b01xc9emh)可执行文件，并将`ffmpeg.exe`解压至`src`同级目录的`ffmpeg`目录下（此目录可能需要自己创建）
 
 链接密码：5ytb
 
 目录结构大概是这样：
 
 ```
-/--main.py
- |-requirments.txt
+/--src/--main.py
+ |     |-requirments.txt
  |-ffmpeg/--ffmpeg.exe
  |-...
 ```
@@ -60,10 +60,12 @@ CONST_KEY=""
 
 
 ### 运行
-在当前目录下运行以下命令
+在主目录下运行以下命令
 ```shell
+cd src
 python compile_ui.py
-pythonw main.py
+cd ..
+pythonw src/main.py
 ```
 当然，也可以写 shell 文件来快速启动，这里不再讲解，参照此处的 shell 即可
 
